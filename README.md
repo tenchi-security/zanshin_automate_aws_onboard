@@ -183,7 +183,6 @@ Logs can help you identify the number of accounts added and troubleshoot problem
 
 5. 
    - **Q.** I want to fetch secrets from AWS Secrets Manage via VPC Endpoint, not using AWS API.
-   
    - **A.** Add a new VPC Endpoint for AWS Secrets Manager on the VPC that's being used to run the automation. Checkout [how to set it up](https://docs.aws.amazon.com/secretsmanager/latest/userguide/vpc-endpoint-overview.html).
 6. 
    - **Q.** I want to limit the addresses that the automation solution can reach.
