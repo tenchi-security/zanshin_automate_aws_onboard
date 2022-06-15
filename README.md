@@ -175,15 +175,15 @@ Logs can help you identify the number of accounts added and troubleshoot problem
 
 3. 
    - **Q.** I want to onboard all member accounts except some specific accounts.
-   - **A.** Add these account ID's or Name you want to not to automatically onboard on the **ZanshinAutomationExcludeAccounts** parameter.
+   - **A.** Add these account ID's or Name you want to not to automatically onboard on the *ZanshinAutomationExcludeAccounts* parameter.
 
 4. 
    - **Q.** I want the onboard automation to run every X days/hours.
-   - **A.** Change the **ZanshinAutomationCronExpression** parameter to make it suitable for your needs.
+   - **A.** Change the *ZanshinAutomationCronExpression* parameter to make it suitable for your needs.
 
 5. 
    - **Q.** I want to fetch secrets from AWS Secrets Manage via VPC Endpoint, not using AWS API.
-   - **A.** Add a new VPC Endpoint for AWS Secrets Manager on the VPC that's being used to run the automation. Checkout [how to set it up](https://docs.aws.amazon.com/secretsmanager/latest/userguide/vpc-endpoint-overview.html).
+   - **A.** Add a new VPC Endpoint for AWS Secrets Manager on the VPC that's being used to run the automation. Checkout [how to set it up](https://docs.aws.amazon.com/secretsmanager/latest/userguide/vpc-endpoint-overview.html). After that, the automation solution will automatically use the VPC Endpoint to reach AWS Secrets Manager.
 6. 
    - **Q.** I want to limit the addresses that the automation solution can reach.
    - **A.** The solutions must be able to download Python packages from [PyPI](https://pypi.org/) and also reach [Zanshin's API](https://api.zanshin.tenchisecurity.com/). Set up a HTTPS Proxy that allows traffic at least to the following addresses on port 443:
