@@ -32,10 +32,7 @@ Parameters:
   AWSExistingVPCId:
     Type: String
     Description: The VPC Id for the Zanshin Automate Task  
-  AWSExistingSubnet1Id:
-    Type: String
-    Description: The Subnet Id for the Zanshin Automate Task
-  AWSExistingSubnet2Id:
+  AWSExistingPrivateSubnetId:
     Type: String
     Description: The Subnet Id for the Zanshin Automate Task
 Resources:
@@ -105,7 +102,8 @@ Resources:
               awslogs-group:
                 Ref: zanshinautomatetaskdefinitionZanshinAutomateOnboardContainerLogGroupAA17AD72
               awslogs-stream-prefix: Zanshin-Automate-Onboard-Fargate
-              awslogs-region: us-east-1
+              awslogs-region:
+                Ref: 'AWS::Region'
           Memory: 512
           Name: ZanshinAutomateOnboardContainer
           Secrets:
@@ -249,8 +247,7 @@ Resources:
                 SecurityGroups:
                   - Ref: ZanshinAutomateOnboardTaskSecurityGroup
                 Subnets:
-                  - Ref: AWSExistingSubnet1Id
-                  - Ref: AWSExistingSubnet2Id
+                  - Ref: AWSExistingPrivateSubnetId
             TaskCount: 1
             TaskDefinitionArn:
               Ref: zanshinautomatetaskdefinition77B93A6C
@@ -260,4 +257,3 @@ Resources:
             Fn::GetAtt:
               - zanshinautomatetaskdefinitionEventsRoleE2143A4D
               - Arn
-    
