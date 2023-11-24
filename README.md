@@ -4,7 +4,7 @@ This CloudFormation template creates the required resources to automatically onb
 
 ## Overview
 
-This will create an AWS ECS Fargate Task and an AWS EventBridge rule will be created to call this task given a cron expression you specify.
+This will create an AWS ECS Fargate Cluster, Task Definition and an AWS EventBridge rule will be created to call this task given a cron expression you specify.
 
 The task will:
 - Download and install [Zanshin CLI](https://github.com/tenchi-security/zanshin-cli/)
@@ -15,9 +15,10 @@ The task will:
 
 There're some steps required to successfully deploy the automation. 
 
-1. Setup AWS Secrets Manager `secret` with Zanshin API Key
-2. Choose VPC subnets that can reach the Internet
-3. Privileges to deploy CloudFormation Stacks on AWS Management Account
+1. Generate an Zanshin API Key for a user with admin privileges
+2. Setup AWS Secrets Manager `secret` with Zanshin API Key
+3. Choose a VPC private/public subnet that can reach the Internet
+4. Privileges to deploy CloudFormation Stacks on AWS Management Account
 
 
 ### 1. Setup AWS Secrets Manager `secret` with Zanshin API Key
@@ -36,17 +37,18 @@ There're some steps required to successfully deploy the automation.
 - On Secrets Manager, **Store a new Secret**.
   - Choose **Other type of secret**. Set the **key** to `api_key` and value to **your Zanshin API Key**.
 ![Create AWS Secrets Manager](images/creating-aws-secret.gif)
-
+  - **Name the Secret** and **create it**.
 
 > :information_source:
 > Copy the `secret` ARN. It'll be used later.
 
-### 2. Choose VPC subnets that can reach the Internet
+### 2. Choose the VPC subnet that can reach the Internet
 
-This solution needs to download [Zanshin CLI](https://pypi.org/project/zanshincli/) from Python Package Index and communicates with Zanshin API on https://api.zanshin.tenchisecurity.com, so it needs to be deployed on a VPC and Subnets that can reach the public internet. If you require that traffic goes through a proxy, that can be configured via CloudFormation Parameters.
+This solution needs to download [Zanshin CLI](https://pypi.org/project/zanshincli/) from Python Package Index and communicates with Zanshin API on https://api.zanshin.tenchisecurity.com, so it needs to be deployed on a VPC and Subnet that can reach the public internet. If you require that traffic goes through a proxy, that can be configured via CloudFormation Parameters.
 
 If you don't have an existing VPC, you can create one. The requirements are:
-- One public and one private subnet, with an [Amazon VPC NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) in order to traffic reach the internet
+- One private and one public subnet, with an [Amazon VPC NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) in order to traffic reach the internet. Or,
+- One public subnet with default route and associated to an [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) in order to traffic reach the internet.
 
 The CloudFormation stack will create a Security Group that don't allow inbound traffic, and only allow outbound traffic via HTTPS.
 
@@ -54,7 +56,7 @@ The CloudFormation stack will create a Security Group that don't allow inbound t
 > :information_source: 
 >  You must save for later:
 > - VPC ID
-> - Two Subnet ID's from the same VPC
+> - Subnet ID from the same VPC
 
 ### 3. Assign privileges to deploy CloudFormation Stacks on AWS Management Account
 
@@ -77,11 +79,11 @@ Trying to deploy this solution with insufficient privileges will result in an in
 In order to deploy the CloudFormation stack, some parameters must be set.
 
 
-#### **AWSExistingSubnet1Id**
+#### **AWSExistingPrivateOrPublicSubnetId**
 The Subnet Id for the Zanshin Automate Task
 
-#### **AWSExistingSubnet2Id**
-The Subnet Id for the Zanshin Automate Task
+#### **TargetAssignPublicIP**
+Disable or Enable Public IP assignement
 
 #### **AWSExistingVPCId**
 The VPC Id for the Zanshin Automate Task
