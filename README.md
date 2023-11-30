@@ -15,7 +15,7 @@ The task will:
 
 There're some steps required to successfully deploy the automation. 
 
-1. Generate an Zanshin API Key for a user with admin privileges
+1. Generate a Zanshin API Key for an user with admin privileges
 2. Setup AWS Secrets Manager `secret` with Zanshin API Key
 3. Choose a VPC private/public subnet that can reach the Internet
 4. Privileges to deploy CloudFormation Stacks on AWS Management Account
@@ -44,11 +44,11 @@ There're some steps required to successfully deploy the automation.
 
 ### 2. Choose the VPC subnet that can reach the Internet
 
-This solution needs to download [Zanshin CLI](https://pypi.org/project/zanshincli/) from Python Package Index and communicates with Zanshin API on https://api.zanshin.tenchisecurity.com, so it needs to be deployed on a VPC and Subnet that can reach the public internet. If you require that traffic goes through a proxy, that can be configured via CloudFormation Parameters.
+This solution needs to download [Zanshin CLI](https://pypi.org/project/zanshincli/) from Python Package Index and communicate with Zanshin API on https://api.zanshin.tenchisecurity.com, so it needs to be deployed on a VPC and Subnet that can reach the public internet. If you require that traffic goes through a proxy, that can be configured via CloudFormation Parameters.
 
 If you don't have an existing VPC, you can create one. The requirements are:
-- One private and one public subnet, with an [Amazon VPC NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) in order to traffic reach the internet. Or,
-- One public subnet with default route and associated to an [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) in order to traffic reach the internet.
+- One private and one public subnet, with an [Amazon VPC NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) in order for traffic to reach the internet. Or,
+- One public subnet with default route and associated to an [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) in order for traffic to reach the internet.
 
 The CloudFormation stack will create a Security Group that don't allow inbound traffic, and only allow outbound traffic via HTTPS.
 
