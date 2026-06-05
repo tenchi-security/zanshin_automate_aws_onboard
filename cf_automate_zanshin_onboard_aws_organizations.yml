@@ -21,7 +21,7 @@ Parameters:
   ZanshinAutomationCronExpression:
     Type: String
     Default: cron(0 12 * * ? *)
-    Description: Cron expression for the Automation Scheduler.
+    Description: Cron expression for the Automation Scheduler (e.g. Every day at 12:00 UTC).
   ZanshinAutomationExcludeAccounts:
     Type: String    
     Description: AWS Accounts ID, Name or E-mail to ignore when performing Automate Onboard
@@ -31,10 +31,14 @@ Parameters:
     Description: The name of the AWS Region you want Zanshin Onboard to deploy CloudFormation to
   AWSExistingVPCId:
     Type: String
-    Description: The VPC Id for the Zanshin Automate Task  
-  AWSExistingPrivateSubnetId:
+    Description: The VPC Id for the Zanshin Automate Task
+  AWSExistingPrivateOrPublicSubnetId:
     Type: String
     Description: The Subnet Id for the Zanshin Automate Task
+  TargetAssignPublicIP:
+    Type: String
+    Default: DISABLED
+    Description: Define if Public IP should be assigned (e.g DISABLED or ENABLED)
 Resources:
   zanshinAutomateOnboardECSCluster:
     Type: AWS::ECS::Cluster
@@ -243,11 +247,12 @@ Resources:
             LaunchType: FARGATE
             NetworkConfiguration:
               AwsVpcConfiguration:
-                AssignPublicIp: DISABLED
+                AssignPublicIp: 
+                  Ref: "TargetAssignPublicIP"
                 SecurityGroups:
                   - Ref: ZanshinAutomateOnboardTaskSecurityGroup
                 Subnets:
-                  - Ref: AWSExistingPrivateSubnetId
+                  - Ref: AWSExistingPrivateOrPublicSubnetId
             TaskCount: 1
             TaskDefinitionArn:
               Ref: zanshinautomatetaskdefinition77B93A6C
