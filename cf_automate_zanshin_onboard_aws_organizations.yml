@@ -99,7 +99,7 @@ Resources:
               Value:
                 Ref: MemberAccountsRoleName
           Essential: true
-          Image: public.ecr.aws/bitnami/python:3.9
+          Image: public.ecr.aws/bitnami/python:3.12
           LogConfiguration:
             LogDriver: awslogs
             Options:
