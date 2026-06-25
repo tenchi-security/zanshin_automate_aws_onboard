@@ -99,7 +99,7 @@ Resources:
               Value:
                 Ref: MemberAccountsRoleName
           Essential: true
-          Image: public.ecr.aws/bitnami/python:3.12
+          Image: public.ecr.aws/docker/library/python:3.12-slim
           LogConfiguration:
             LogDriver: awslogs
             Options:
